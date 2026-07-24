@@ -1,0 +1,85 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# BrightMind — Docker Compose
+# Accessible Learning Platform: Frontend + API + Swagger Docs
+# ═══════════════════════════════════════════════════════════════════════════
+
+version: '3.9'
+
+services:
+
+  # ── API Backend (Express + Swagger) ──────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: src/Dockerfile.api
+    container_name: brightmind-api
+    restart: unless-stopped
+    environment:
+      NODE_ENV:             ${NODE_ENV:-development}
+      PORT:                 5000
+      JWT_SECRET:           ${JWT_SECRET:-brightmind-super-secret-key-change-in-prod}
+      JWT_EXPIRES_IN:       ${JWT_EXPIRES_IN:-7d}
+      CORS_ORIGIN:          ${CORS_ORIGIN:-http://localhost:3000}
+      RATELIMIT_WINDOW_MS:  ${RATELIMIT_WINDOW_MS:-900000}
+      RATELIMIT_MAX:        ${RATELIMIT_MAX:-100}
+    ports:
+      - "5000:5000"   # API direct access
+    networks:
+      - brightmind-net
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries:  3
+      start_period: 20s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ── Frontend (Nginx) ──────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: .
+      dockerfile: src/Dockerfile.frontend
+    container_name: brightmind-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"   # Main app
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - brightmind-net
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:80/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+# ── Networks ────────────────────────────────────────────────────────────────
+networks:
+  brightmind-net:
+    driver: bridge
+    name: brightmind-network
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Usage:
+#   docker compose up --build        # Start all services
+#   docker compose up -d             # Start in background
+#   docker compose logs -f api       # Stream API logs
+#   docker compose down              # Stop all services
+#   docker compose down -v           # Stop and remove volumes
+#
+# URLs after startup:
+#   Frontend:      http://localhost:3000
+#   API:           http://localhost:5000/api
+#   Swagger UI:    http://localhost:5000/api-docs
+#   Health Check:  http://localhost:5000/api/health
+# ═══════════════════════════════════════════════════════════════════════════
