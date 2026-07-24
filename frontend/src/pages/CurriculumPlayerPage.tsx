@@ -468,7 +468,8 @@ export const CurriculumPlayerPage: React.FC = () => {
   // consent (and never while a teacher is previewing). Feeds the teacher's
   // per-unit heatmap. The student can toggle it off any time.
   const [focusTracking, setFocusTracking] = useState(() => hasCameraConsent());
-  const trackingOn = focusTracking && !isPreview && view === "lesson";
+  const isBlind = user?.disabilityType === "BLINDNESS";
+  const trackingOn = focusTracking && !isPreview && view === "lesson" && !isBlind;
   const { active: trackingActive, score: focusScore } =
     useConcentrationTracking(unitId as string, lessonIndex, mode, trackingOn);
 
@@ -805,7 +806,7 @@ export const CurriculumPlayerPage: React.FC = () => {
             <ArrowLeft className="w-5 h-5" /> Back
           </button>
           <div className="flex items-center gap-2">
-            {!isPreview && (
+            {!isPreview && !isBlind && (
               <button
                 onClick={() => setFocusTracking((v) => !v)}
                 title={
@@ -884,7 +885,7 @@ export const CurriculumPlayerPage: React.FC = () => {
             instant (no regeneration) and keeps your place.
             Sign mode is strictly reserved for DEAF learners. */}
         <div className="flex flex-wrap gap-2 mb-3">
-          {MODES.filter((m) => m.key !== "SIGN" || (user?.disabilityType === "DEAFNESS" || prefs.signLanguage)).map((m) => {
+          {MODES.filter((m) => m.key !== "SIGN" || (user?.disabilityType === "DEAFNESS" || user?.disabilityType === null)).map((m) => {
             const Icon = m.icon;
             const active = mode === m.key;
             return (

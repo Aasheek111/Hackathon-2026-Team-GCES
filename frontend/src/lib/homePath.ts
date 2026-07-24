@@ -39,10 +39,8 @@ export interface HomePathUser {
 }
 
 export const STUDENT_DASHBOARDS = {
-  /** Original adaptive dashboard - autism, ADHD, and anyone who skipped the question. */
+  /** Original adaptive dashboard - autism, ADHD, blindness, and anyone who skipped the question. */
   DEFAULT: '/dashboard',
-  /** Audio-first and voice-navigable. */
-  AUDIO: '/dashboard/audio',
   /** Visual and caption-first, with sign-language learning. */
   VISUAL: '/dashboard/visual',
 } as const;
@@ -53,8 +51,6 @@ export function homePathFor(user: HomePathUser | null | undefined): string {
   if (user.role === 'TEACHER') return '/teacher';
 
   switch (user.disabilityType) {
-    case 'BLINDNESS':
-      return STUDENT_DASHBOARDS.AUDIO;
     case 'DEAFNESS':
       return STUDENT_DASHBOARDS.VISUAL;
     // AUTISM, ADHD, NONE, null - the original dashboard, unchanged.

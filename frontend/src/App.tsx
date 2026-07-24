@@ -24,8 +24,6 @@ import RawDocViewerPage from "./pages/RawDocViewerPage";
 import YoutubeQuizPage from "./pages/YoutubeQuizPage";
 import ProgressPage from "./pages/ProgressPage";
 import AccessibilitySettingsPage from "./pages/AccessibilitySettingsPage";
-import AudioDashboardPage from "./pages/audio/AudioDashboardPage";
-import AudioQuizPage from "./pages/audio/AudioQuizPage";
 import VisualDashboardPage from "./pages/visual/VisualDashboardPage";
 import SignLanguagePage from "./pages/visual/SignLanguagePage";
 import SignQuizPage from "./pages/visual/SignQuizPage";
@@ -65,17 +63,8 @@ const ProtectedRoute = ({
 
   // Student specific access control for Dashboard & Paid features
   if (user?.role === "STUDENT") {
-    // 1. If user hasn't completed their 1 free adaptive trial session, send to /consent -> /quiz.
-    //    Exception: the standard trial is a webcam eye-tracking quiz, which a
-    //    blind student cannot complete and shouldn't be asked to consent to.
-    //    They take the equivalent voice quiz instead - it posts to the same
-    //    /assessments endpoints, so it satisfies the trial the same way.
     if (!user.freeTrialUsed && requirePaidStudent) {
-      const trialPath =
-        user.disabilityType === "BLINDNESS"
-          ? "/dashboard/audio/quiz"
-          : "/consent";
-      return <Navigate to={trialPath} replace />;
+      return <Navigate to="/consent" replace />;
     }
     // 2. If free trial is finished and user has NOT paid yet, block dashboard and send to /subscription
     if (user.freeTrialUsed && !user.hasPaid && requirePaidStudent) {
@@ -288,26 +277,6 @@ const App: React.FC = () => {
               student can open any of them by URL (useful for a teacher or
               carer demoing, and for a student whose needs don't fit one box).
               homePathFor() only decides which one you LAND on. */}
-          <Route
-            path="/dashboard/audio"
-            element={
-              <ProtectedRoute allowRoles={["STUDENT"]} requirePaidStudent>
-                <AudioDashboardPage />
-              </ProtectedRoute>
-            }
-          />
-          {/* Auth-only, deliberately NOT requirePaidStudent - this IS the free
-              trial for a blind student (see ProtectedRoute), so gating it on
-              having completed the trial would be a redirect loop. Mirrors how
-              /consent and /quiz are gated for everyone else. */}
-          <Route
-            path="/dashboard/audio/quiz"
-            element={
-              <ProtectedRoute allowRoles={["STUDENT"]}>
-                <AudioQuizPage />
-              </ProtectedRoute>
-            }
-          />
           <Route
             path="/dashboard/visual"
             element={
