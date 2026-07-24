@@ -110,8 +110,7 @@ export const DashboardPage: React.FC = () => {
     );
   });
 
-  const isDeafUser = user?.disabilityType === "DEAFNESS" || user?.disabilityType === null;
-  const navItems: NavItem[] = getStudentNavItems(isDeafUser, "/dashboard");
+  const navItems: NavItem[] = getStudentNavItems(user?.disabilityType, "/dashboard");
 
   const latest = history[0];
   const chartData = [...history]
