@@ -60,16 +60,26 @@ const MODE_LABELS: Record<LearningMode, string> = {
 
 const DEFAULT_SUBJECT_IMAGES: Record<string, string> = {
   MATH: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=800&q=80",
-  SCIENCE: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=800&q=80",
-  ASTRONOMY: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&w=800&q=80",
-  NATURE: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=800&q=80",
-  ANIMALS: "https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80",
-  SOUNDS: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80",
-  GEOMETRY: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=800&q=80",
-  GEOGRAPHY: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
-  BOTANY: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=800&q=80",
-  BIOLOGY: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=800&q=80",
-  ANATOMY: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=800&q=80",
+  SCIENCE:
+    "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=800&q=80",
+  ASTRONOMY:
+    "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&w=800&q=80",
+  NATURE:
+    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=800&q=80",
+  ANIMALS:
+    "https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80",
+  SOUNDS:
+    "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80",
+  GEOMETRY:
+    "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=800&q=80",
+  GEOGRAPHY:
+    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+  BOTANY:
+    "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=800&q=80",
+  BIOLOGY:
+    "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=800&q=80",
+  ANATOMY:
+    "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=800&q=80",
 };
 
 const getSubjectDatasetImage = (subject: string): string => {
@@ -88,7 +98,8 @@ const demo20Questions = [
     answer: "8",
     learningMode: "TEXT",
     subject: "Math",
-    imageUrl: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "2",
@@ -97,7 +108,8 @@ const demo20Questions = [
     answer: "Lion",
     learningMode: "VISUAL",
     subject: "Animals",
-    imageUrl: "https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "3",
@@ -106,7 +118,8 @@ const demo20Questions = [
     answer: "Blue",
     learningMode: "AUDIO",
     subject: "Nature",
-    imageUrl: "https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "4",
@@ -115,7 +128,8 @@ const demo20Questions = [
     answer: "8",
     learningMode: "TEXT",
     subject: "Math",
-    imageUrl: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "5",
@@ -124,7 +138,8 @@ const demo20Questions = [
     answer: "Mars",
     learningMode: "VISUAL",
     subject: "Astronomy",
-    imageUrl: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "6",
@@ -133,7 +148,8 @@ const demo20Questions = [
     answer: "8",
     learningMode: "AUDIO",
     subject: "Nature",
-    imageUrl: "https://images.unsplash.com/photo-1579202673506-ca3ce28943ef?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1579202673506-ca3ce28943ef?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "7",
@@ -142,7 +158,8 @@ const demo20Questions = [
     answer: "12",
     learningMode: "TEXT",
     subject: "Math",
-    imageUrl: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "8",
@@ -151,7 +168,8 @@ const demo20Questions = [
     answer: "Bat",
     learningMode: "VISUAL",
     subject: "Animals",
-    imageUrl: "https://images.unsplash.com/photo-1590005354167-6da97870c757?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1590005354167-6da97870c757?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "9",
@@ -160,7 +178,8 @@ const demo20Questions = [
     answer: "Woof",
     learningMode: "AUDIO",
     subject: "Animals",
-    imageUrl: "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "10",
@@ -169,7 +188,8 @@ const demo20Questions = [
     answer: "6",
     learningMode: "TEXT",
     subject: "Geometry",
-    imageUrl: "https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "11",
@@ -178,7 +198,8 @@ const demo20Questions = [
     answer: "Pacific",
     learningMode: "VISUAL",
     subject: "Geography",
-    imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "12",
@@ -187,7 +208,8 @@ const demo20Questions = [
     answer: "15",
     learningMode: "AUDIO",
     subject: "Math",
-    imageUrl: "https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "13",
@@ -196,7 +218,8 @@ const demo20Questions = [
     answer: "0°C",
     learningMode: "TEXT",
     subject: "Science",
-    imageUrl: "https://images.unsplash.com/photo-1517685352821-92cf88aee5a5?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1517685352821-92cf88aee5a5?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "14",
@@ -205,7 +228,8 @@ const demo20Questions = [
     answer: "Strawberry",
     learningMode: "VISUAL",
     subject: "Botany",
-    imageUrl: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "15",
@@ -214,7 +238,8 @@ const demo20Questions = [
     answer: "Oxygen",
     learningMode: "AUDIO",
     subject: "Biology",
-    imageUrl: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "16",
@@ -223,7 +248,8 @@ const demo20Questions = [
     answer: "5",
     learningMode: "TEXT",
     subject: "Math",
-    imageUrl: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "17",
@@ -232,7 +258,8 @@ const demo20Questions = [
     answer: "Heart",
     learningMode: "VISUAL",
     subject: "Anatomy",
-    imageUrl: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "18",
@@ -241,7 +268,8 @@ const demo20Questions = [
     answer: "366",
     learningMode: "AUDIO",
     subject: "General Knowledge",
-    imageUrl: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "19",
@@ -250,7 +278,8 @@ const demo20Questions = [
     answer: "Blue & Yellow",
     learningMode: "TEXT",
     subject: "Art",
-    imageUrl: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "20",
@@ -259,7 +288,8 @@ const demo20Questions = [
     answer: "13",
     learningMode: "VISUAL",
     subject: "Math",
-    imageUrl: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "21",
@@ -268,7 +298,8 @@ const demo20Questions = [
     answer: "Mount Everest",
     learningMode: "VISUAL",
     subject: "Geography",
-    imageUrl: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "22",
@@ -277,7 +308,8 @@ const demo20Questions = [
     answer: "Photosynthesis",
     learningMode: "TEXT",
     subject: "Botany",
-    imageUrl: "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "23",
@@ -286,7 +318,8 @@ const demo20Questions = [
     answer: "The Sun",
     learningMode: "VISUAL",
     subject: "Astronomy",
-    imageUrl: "https://images.unsplash.com/photo-1538370965046-79c0d6907d47?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1538370965046-79c0d6907d47?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "24",
@@ -295,16 +328,19 @@ const demo20Questions = [
     answer: "49",
     learningMode: "TEXT",
     subject: "Math",
-    imageUrl: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "25",
-    question: "Which organ in the human body is responsible for thinking and memory?",
+    question:
+      "Which organ in the human body is responsible for thinking and memory?",
     options: ["Heart", "Lungs", "Brain", "Liver"],
     answer: "Brain",
     learningMode: "VISUAL",
     subject: "Anatomy",
-    imageUrl: "https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "26",
@@ -313,7 +349,8 @@ const demo20Questions = [
     answer: "Kathmandu",
     learningMode: "TEXT",
     subject: "Geography",
-    imageUrl: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "27",
@@ -322,7 +359,8 @@ const demo20Questions = [
     answer: "Saturn",
     learningMode: "VISUAL",
     subject: "Astronomy",
-    imageUrl: "https://images.unsplash.com/photo-1614732414444-096e5f1122d5?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1614732414444-096e5f1122d5?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "28",
@@ -331,7 +369,8 @@ const demo20Questions = [
     answer: "3",
     learningMode: "TEXT",
     subject: "Geometry",
-    imageUrl: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "29",
@@ -340,16 +379,19 @@ const demo20Questions = [
     answer: "Diamond",
     learningMode: "VISUAL",
     subject: "Science",
-    imageUrl: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "30",
-    question: "What force keeps our feet on the ground and pulls objects downward?",
+    question:
+      "What force keeps our feet on the ground and pulls objects downward?",
     options: ["Magnetism", "Friction", "Gravity", "Electricity"],
     answer: "Gravity",
     learningMode: "AUDIO",
     subject: "Physics",
-    imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "31",
@@ -358,7 +400,8 @@ const demo20Questions = [
     answer: "48",
     learningMode: "TEXT",
     subject: "Math",
-    imageUrl: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "32",
@@ -367,7 +410,8 @@ const demo20Questions = [
     answer: "Owl",
     learningMode: "VISUAL",
     subject: "Animals",
-    imageUrl: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "33",
@@ -376,7 +420,8 @@ const demo20Questions = [
     answer: "206",
     learningMode: "TEXT",
     subject: "Anatomy",
-    imageUrl: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "34",
@@ -385,7 +430,8 @@ const demo20Questions = [
     answer: "100°C",
     learningMode: "VISUAL",
     subject: "Science",
-    imageUrl: "https://images.unsplash.com/photo-1517685352821-92cf88aee5a5?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1517685352821-92cf88aee5a5?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "35",
@@ -394,7 +440,8 @@ const demo20Questions = [
     answer: "Milky Way",
     learningMode: "VISUAL",
     subject: "Astronomy",
-    imageUrl: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "36",
@@ -403,16 +450,19 @@ const demo20Questions = [
     answer: "55",
     learningMode: "TEXT",
     subject: "Math",
-    imageUrl: "https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "37",
-    question: "Which gas do green plants absorb from the atmosphere for photosynthesis?",
+    question:
+      "Which gas do green plants absorb from the atmosphere for photosynthesis?",
     options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"],
     answer: "Carbon Dioxide",
     learningMode: "VISUAL",
     subject: "Botany",
-    imageUrl: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "38",
@@ -421,7 +471,8 @@ const demo20Questions = [
     answer: "Blue Whale",
     learningMode: "VISUAL",
     subject: "Animals",
-    imageUrl: "https://images.unsplash.com/photo-1568430460464-02e706195981?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1568430460464-02e706195981?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "39",
@@ -430,7 +481,8 @@ const demo20Questions = [
     answer: "9",
     learningMode: "TEXT",
     subject: "Math",
-    imageUrl: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "40",
@@ -439,7 +491,8 @@ const demo20Questions = [
     answer: "Egyptians",
     learningMode: "VISUAL",
     subject: "History",
-    imageUrl: "https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "41",
@@ -448,7 +501,8 @@ const demo20Questions = [
     answer: "9",
     learningMode: "TEXT",
     subject: "Math",
-    imageUrl: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "42",
@@ -457,7 +511,8 @@ const demo20Questions = [
     answer: "Russia",
     learningMode: "VISUAL",
     subject: "Geography",
-    imageUrl: "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "43",
@@ -466,7 +521,8 @@ const demo20Questions = [
     answer: "Lungs",
     learningMode: "VISUAL",
     subject: "Anatomy",
-    imageUrl: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "44",
@@ -475,7 +531,8 @@ const demo20Questions = [
     answer: "40",
     learningMode: "TEXT",
     subject: "Math",
-    imageUrl: "https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "45",
@@ -484,7 +541,8 @@ const demo20Questions = [
     answer: "The Moon",
     learningMode: "VISUAL",
     subject: "Astronomy",
-    imageUrl: "https://images.unsplash.com/photo-1532693322450-2cb5c511067d?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1532693322450-2cb5c511067d?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "46",
@@ -493,7 +551,8 @@ const demo20Questions = [
     answer: "H2O",
     learningMode: "TEXT",
     subject: "Science",
-    imageUrl: "https://images.unsplash.com/photo-1517685352821-92cf88aee5a5?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1517685352821-92cf88aee5a5?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "47",
@@ -502,7 +561,8 @@ const demo20Questions = [
     answer: "8",
     learningMode: "VISUAL",
     subject: "Geometry",
-    imageUrl: "https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "48",
@@ -511,7 +571,8 @@ const demo20Questions = [
     answer: "121",
     learningMode: "TEXT",
     subject: "Math",
-    imageUrl: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "49",
@@ -520,7 +581,8 @@ const demo20Questions = [
     answer: "Sahara",
     learningMode: "VISUAL",
     subject: "Geography",
-    imageUrl: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "50",
@@ -529,7 +591,8 @@ const demo20Questions = [
     answer: "8",
     learningMode: "TEXT",
     subject: "Math",
-    imageUrl: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "51",
@@ -538,7 +601,8 @@ const demo20Questions = [
     answer: "Integumentary",
     learningMode: "VISUAL",
     subject: "Anatomy",
-    imageUrl: "https://images.unsplash.com/photo-1512290900673-45a8df2f3e8f?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1512290900673-45a8df2f3e8f?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "52",
@@ -547,7 +611,8 @@ const demo20Questions = [
     answer: "33",
     learningMode: "TEXT",
     subject: "Math",
-    imageUrl: "https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "53",
@@ -556,7 +621,8 @@ const demo20Questions = [
     answer: "Asia",
     learningMode: "VISUAL",
     subject: "Geography",
-    imageUrl: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "54",
@@ -565,7 +631,8 @@ const demo20Questions = [
     answer: "8",
     learningMode: "TEXT",
     subject: "Astronomy",
-    imageUrl: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "55",
@@ -574,7 +641,8 @@ const demo20Questions = [
     answer: "Gas",
     learningMode: "VISUAL",
     subject: "Science",
-    imageUrl: "https://images.unsplash.com/photo-1517685352821-92cf88aee5a5?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1517685352821-92cf88aee5a5?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "56",
@@ -583,16 +651,19 @@ const demo20Questions = [
     answer: "81",
     learningMode: "TEXT",
     subject: "Math",
-    imageUrl: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "57",
-    question: "Which fast cat species is famous for being the fastest land animal?",
+    question:
+      "Which fast cat species is famous for being the fastest land animal?",
     options: ["Lion", "Cheetah", "Leopard", "Jaguar"],
     answer: "Cheetah",
     learningMode: "VISUAL",
     subject: "Animals",
-    imageUrl: "https://images.unsplash.com/photo-1534188753412-3e26d0d618d6?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1534188753412-3e26d0d618d6?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "58",
@@ -601,7 +672,8 @@ const demo20Questions = [
     answer: "12",
     learningMode: "TEXT",
     subject: "Math",
-    imageUrl: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "59",
@@ -610,7 +682,8 @@ const demo20Questions = [
     answer: "Kidneys",
     learningMode: "VISUAL",
     subject: "Anatomy",
-    imageUrl: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "60",
@@ -619,7 +692,8 @@ const demo20Questions = [
     answer: "Nile",
     learningMode: "VISUAL",
     subject: "Geography",
-    imageUrl: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80",
+    imageUrl:
+      "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80",
   },
 ];
 
@@ -631,9 +705,12 @@ const getRandom20Questions = () => {
 export const QuizPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const isBlind = user?.disabilityType === "BLINDNESS";
   const [questions, setQuestions] = useState(() => getRandom20Questions());
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentMode, setCurrentMode] = useState<LearningMode>("TEXT");
+  const [currentMode, setCurrentMode] = useState<LearningMode>(
+    isBlind ? "AUDIO" : "TEXT",
+  );
   const [timeLeft, setTimeLeft] = useState(900);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
@@ -658,15 +735,19 @@ export const QuizPage: React.FC = () => {
     api
       .get("/assessments/questions")
       .then(({ data }) => {
-        if (data.questions && Array.isArray(data.questions) && data.questions.length > 0) {
+        if (
+          data.questions &&
+          Array.isArray(data.questions) &&
+          data.questions.length > 0
+        ) {
           const adminFormatted = data.questions.map((q: any) => ({
             id: q.id,
             question: q.question,
             options: Array.isArray(q.options)
               ? q.options
               : typeof q.options === "string"
-              ? JSON.parse(q.options)
-              : [],
+                ? JSON.parse(q.options)
+                : [],
             answer: q.answer,
             learningMode: q.learningMode || "TEXT",
             subject: q.subject || "General",
@@ -678,12 +759,15 @@ export const QuizPage: React.FC = () => {
           // Admin questions come first, merged with demo pool
           const combined = [...adminFormatted, ...demo20Questions];
           const deduplicated = Array.from(
-            new Map(combined.map((item) => [item.question, item])).values()
+            new Map(combined.map((item) => [item.question, item])).values(),
           );
-          const merged = deduplicated.slice(0, Math.max(20, adminFormatted.length));
+          const merged = deduplicated.slice(
+            0,
+            Math.max(20, adminFormatted.length),
+          );
           setQuestions(merged);
           // Set initial mode from the first question's learningMode
-          if (merged[0]?.learningMode) {
+          if (merged[0]?.learningMode && !isBlind) {
             const firstMode = merged[0].learningMode as LearningMode;
             setCurrentMode(firstMode);
             currentModeRef.current = firstMode;
@@ -696,6 +780,7 @@ export const QuizPage: React.FC = () => {
   }, []);
 
   const lowEyeContactCounter = useRef(0);
+  const distractionCountRef = useRef(0);
   const adaptationLockedRef = useRef(false);
   const currentIndexRef = useRef(0);
   const currentModeRef = useRef<LearningMode>("TEXT");
@@ -847,9 +932,7 @@ export const QuizPage: React.FC = () => {
       );
     });
 
-  // Instead of scoring which mode has performed "best" and jumping to a
-  // matching subject, we simply advance to the next mode in the fixed
-  // cycle: Text -> Audio -> Visual -> AR Game -> Text -> ...
+  // Advances through active learning modes: TEXT -> AUDIO -> VISUAL -> TEXT
   const getNextModeInCycle = useCallback(
     (current: LearningMode): LearningMode => {
       const idx = MODE_CYCLE.indexOf(current);
@@ -876,8 +959,10 @@ export const QuizPage: React.FC = () => {
   }, [questions]);
 
   const handleEyeContactLossAdaptation = useCallback(() => {
-    if (adaptationLockedRef.current || selectedAnswer !== null) return;
+    if (adaptationLockedRef.current || selectedAnswer !== null || isBlind)
+      return;
     adaptationLockedRef.current = true;
+    distractionCountRef.current = 0;
     const nextMode = getNextModeInCycle(currentModeRef.current);
     const nextIndex = findNextQuestionIndex();
     if (nextIndex === null) {
@@ -918,6 +1003,7 @@ export const QuizPage: React.FC = () => {
     completeAssessment,
     findNextQuestionIndex,
     getNextModeInCycle,
+    isBlind,
     navigate,
     score,
     selectedAnswer,
@@ -937,10 +1023,11 @@ export const QuizPage: React.FC = () => {
         videoRef.current.srcObject = null;
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
+    if (isBlind) return;
     async function startCamera() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -980,9 +1067,10 @@ export const QuizPage: React.FC = () => {
         videoRef.current.srcObject = null;
       }
     };
-  }, []);
+  }, [isBlind]);
 
   useEffect(() => {
+    if (isBlind || !cameraActive) return;
     let animationFrameId: number;
     let lastSampleTime = 0;
     let requestInFlight = false;
@@ -1060,7 +1148,20 @@ export const QuizPage: React.FC = () => {
             ) {
               lowEyeContactCounter.current += 1;
               if (lowEyeContactCounter.current >= LOW_EYE_CONTACT_SAMPLES) {
-                handleEyeContactLossAdaptation();
+                lowEyeContactCounter.current = 0;
+                if (!adaptationLockedRef.current && selectedAnswer === null && !isBlind) {
+                  distractionCountRef.current += 1;
+                  if (distractionCountRef.current === 1) {
+                    const nextModeName = MODE_LABELS[getNextModeInCycle(currentModeRef.current)];
+                    setAdaptationToast(
+                      `Distraction 1/2 detected! Stay focused. Next distraction will adapt mode to ${nextModeName}.`
+                    );
+                    setTimeout(() => setAdaptationToast(null), 4000);
+                  } else if (distractionCountRef.current >= 2) {
+                    distractionCountRef.current = 0;
+                    handleEyeContactLossAdaptation();
+                  }
+                }
               }
             } else {
               lowEyeContactCounter.current = 0;
@@ -1089,7 +1190,7 @@ export const QuizPage: React.FC = () => {
       cancelled = true;
       cancelAnimationFrame(animationFrameId);
     };
-  }, [cameraActive, handleEyeContactLossAdaptation]);
+  }, [cameraActive, handleEyeContactLossAdaptation, isBlind]);
 
   useEffect(() => {
     if (timeLeft <= 0) {
@@ -1144,14 +1245,20 @@ export const QuizPage: React.FC = () => {
   useEffect(() => {
     if (questions[currentIndex] && !showTransition) {
       const timer = setTimeout(() => {
-        speakText(questions[currentIndex].question);
+        const q = questions[currentIndex];
+        if (isBlind) {
+          const fullPrompt = `Question: ${q.question}. Options are: ${q.options.map((opt, i) => `Option ${String.fromCharCode(65 + i)}, ${opt}`).join(". ")}. Say option A, B, C, or D to answer.`;
+          speakText(fullPrompt);
+        } else {
+          speakText(q.question);
+        }
       }, 200);
       return () => {
         clearTimeout(timer);
         synth.cancel();
       };
     }
-  }, [currentIndex, questions, showTransition, speakText]);
+  }, [currentIndex, questions, showTransition, speakText, isBlind]);
 
   const handleAnswer = (option: string) => {
     if (selectedAnswer !== null) return;
@@ -1172,13 +1279,6 @@ export const QuizPage: React.FC = () => {
     setTimeout(() => {
       const nextIndex = findNextQuestionIndex();
       if (nextIndex !== null) {
-        // Respect admin-set learningMode for the next question as the baseline
-        const nextQ = questions[nextIndex];
-        if (nextQ?.learningMode && !adaptationLockedRef.current) {
-          const nextQMode = nextQ.learningMode as LearningMode;
-          setCurrentMode(nextQMode);
-          currentModeRef.current = nextQMode;
-        }
         setCurrentIndex(nextIndex);
         setSelectedAnswer(null);
         setIsCorrect(null);
@@ -1238,11 +1338,17 @@ export const QuizPage: React.FC = () => {
         phrases: ["finish", "finish quiz", "submit quiz"],
         description: "Finish quiz",
         run: () => {
-          completeAssessment(score, visitedQuestionIdsRef.current.size).then((attempt) => {
-            navigate("/quiz/result", {
-              state: { score, total: visitedQuestionIdsRef.current.size, attempt },
-            });
-          });
+          completeAssessment(score, visitedQuestionIdsRef.current.size).then(
+            (attempt) => {
+              navigate("/quiz/result", {
+                state: {
+                  score,
+                  total: visitedQuestionIdsRef.current.size,
+                  attempt,
+                },
+              });
+            },
+          );
         },
       },
       {
@@ -1251,7 +1357,17 @@ export const QuizPage: React.FC = () => {
         run: () => navigate(homePathFor(user)),
       },
     ];
-  }, [currentIndex, questions, selectedAnswer, handleAnswer, speakText, score, completeAssessment, navigate, user]);
+  }, [
+    currentIndex,
+    questions,
+    selectedAnswer,
+    handleAnswer,
+    speakText,
+    score,
+    completeAssessment,
+    navigate,
+    user,
+  ]);
 
   usePageVoiceCommands(voiceCommands);
 
@@ -1400,19 +1516,20 @@ export const QuizPage: React.FC = () => {
                     Subject: {currentQ.subject.toUpperCase()}
                   </div>
 
-                  {(currentMode === "VISUAL" || currentQ.learningMode === "VISUAL") && (
+                  {currentMode === "VISUAL" && (
                     <div className="relative overflow-hidden rounded-2xl mb-6 border border-slate-200 shadow-sm bg-slate-100 max-h-80">
                       <img
                         src={
-                          currentQ.imageUrl && currentQ.imageUrl.trim().length > 5
+                          currentQ.imageUrl &&
+                          currentQ.imageUrl.trim().length > 5
                             ? currentQ.imageUrl
-                            : "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80"
+                            : getSubjectDatasetImage(currentQ.subject)
                         }
                         alt={`Visual context for ${currentQ.subject}`}
                         className="w-full h-64 sm:h-72 object-cover rounded-2xl"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src =
-                            "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80";
+                            getSubjectDatasetImage(currentQ.subject);
                         }}
                       />
                     </div>
@@ -1484,94 +1601,126 @@ export const QuizPage: React.FC = () => {
         </div>
 
         <aside className="w-full md:w-80 shrink-0">
-          <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <span className="flex items-center font-bold text-xs text-slate-900">
-                <Camera className="w-4 h-4 mr-2 text-emerald-600" /> Live Eye
-                Tracking
-              </span>
-              <span
-                className={`text-[11px] px-2.5 py-0.5 rounded-full font-bold flex items-center border ${faceDetected ? "bg-emerald-50 text-emerald-800 border-emerald-200" : "bg-rose-50 text-rose-800 border-rose-200"}`}
-              >
-                <span
-                  className={`w-2 h-2 rounded-full mr-1.5 ${faceDetected ? "bg-emerald-500 animate-pulse" : "bg-rose-500"}`}
-                />
-                {faceDetected ? "Face Detected" : "No Face"}
-              </span>
-            </div>
-
-            <div className="relative w-full h-40 bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 flex items-center justify-center">
-              <video
-                ref={videoRef}
-                autoPlay
-                playsInline
-                muted
-                className={`w-full h-full object-cover ${cameraActive ? "block" : "hidden"}`}
-              />
-              <canvas
-                ref={canvasRef}
-                className="absolute inset-0 w-full h-full pointer-events-none opacity-80"
-              />
-
-              {!cameraActive && (
-                <div className="p-4 text-center space-y-2">
-                  <Eye className="w-8 h-8 text-emerald-400 mx-auto animate-pulse" />
-                  <p className="text-xs text-slate-300 font-medium">
-                    {cameraError || "Requesting camera permissions..."}
-                  </p>
-                </div>
-              )}
-
-              <div className="absolute inset-0 border border-emerald-400/30 rounded-2xl pointer-events-none flex items-center justify-center">
-                <div
-                  className={`w-14 h-14 border-2 rounded-full transition-all duration-300 ${faceDetected ? "border-amber-400 scale-100" : "border-rose-400 scale-90"}`}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-3 pt-1 text-xs">
-              <div className="flex justify-between items-center font-semibold">
-                <span className="text-slate-500">Eye Gaze:</span>
-                <span
-                  className={`font-bold ${faceDetected ? "text-emerald-700" : "text-rose-600"}`}
-                >
-                  {gazeStatus}
+          {isBlind ? (
+            <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <span className="flex items-center font-bold text-xs text-slate-900">
+                  <Volume2 className="w-4 h-4 mr-2 text-sky-600 animate-pulse" />{" "}
+                  Voice Companion
+                </span>
+                <span className="text-[11px] px-2.5 py-0.5 rounded-full font-bold flex items-center border bg-sky-50 text-sky-800 border-sky-200">
+                  <span className="w-2 h-2 rounded-full mr-1.5 bg-sky-500 animate-ping" />
+                  Voice Nav Active
                 </span>
               </div>
 
-              <div>
-                <div className="flex justify-between font-bold mb-1">
-                  <span className="text-slate-500">Attention Score</span>
+              <div className="bg-sky-50/70 p-4 rounded-2xl border border-sky-100 space-y-3">
+                <p className="text-xs font-bold text-sky-900">
+                  Voice Commands Available:
+                </p>
+                <ul className="text-xs text-slate-700 space-y-2">
+                  <li className="flex items-center justify-between bg-white px-3 py-1.5 rounded-xl border border-sky-100 font-medium">
+                    <span>"Option A / B / C / D"</span>
+                    <span className="text-[10px] font-bold bg-sky-100 text-sky-800 px-2 py-0.5 rounded-md">
+                      Answer
+                    </span>
+                  </li>
+                  <li className="flex items-center justify-between bg-white px-3 py-1.5 rounded-xl border border-sky-100 font-medium">
+                    <span>"Repeat Question"</span>
+                    <span className="text-[10px] font-bold bg-sky-100 text-sky-800 px-2 py-0.5 rounded-md">
+                      Audio
+                    </span>
+                  </li>
+                  <li className="flex items-center justify-between bg-white px-3 py-1.5 rounded-xl border border-sky-100 font-medium">
+                    <span>"Finish Quiz"</span>
+                    <span className="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md">
+                      Submit
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <span className="flex items-center font-bold text-xs text-slate-900">
+                  <Camera className="w-4 h-4 mr-2 text-emerald-600" /> Live Eye
+                  Tracking
+                </span>
+                <span
+                  className={`text-[11px] px-2.5 py-0.5 rounded-full font-bold flex items-center border ${faceDetected ? "bg-emerald-50 text-emerald-800 border-emerald-200" : "bg-rose-50 text-rose-800 border-rose-200"}`}
+                >
                   <span
-                    className={
-                      engagementScore >= 60
-                        ? "text-emerald-700"
-                        : engagementScore >= 30
-                          ? "text-amber-700"
-                          : "text-rose-700"
-                    }
-                  >
-                    {engagementScore}%
-                  </span>
-                </div>
-                <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+                    className={`w-2 h-2 rounded-full mr-1.5 ${faceDetected ? "bg-emerald-500 animate-pulse" : "bg-rose-500"}`}
+                  />
+                  {faceDetected ? "Face Detected" : "No Face"}
+                </span>
+              </div>
+
+              <div className="relative w-full h-40 bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 flex items-center justify-center">
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  playsInline
+                  muted
+                  className={`w-full h-full object-cover ${cameraActive ? "block" : "hidden"}`}
+                />
+                <canvas
+                  ref={canvasRef}
+                  className="absolute inset-0 w-full h-full pointer-events-none opacity-80"
+                />
+
+                {!cameraActive && (
+                  <div className="p-4 text-center space-y-2">
+                    <Eye className="w-8 h-8 text-emerald-400 mx-auto animate-pulse" />
+                    <p className="text-xs text-slate-300 font-medium">
+                      {cameraError || "Requesting camera permissions..."}
+                    </p>
+                  </div>
+                )}
+
+                <div className="absolute inset-0 border border-emerald-400/30 rounded-2xl pointer-events-none flex items-center justify-center">
                   <div
-                    className={`h-full transition-all duration-300 ${engagementScore >= 60 ? "bg-emerald-500" : engagementScore >= 30 ? "bg-amber-500" : "bg-rose-500"}`}
-                    style={{ width: `${engagementScore}%` }}
+                    className={`w-14 h-14 border-2 rounded-full transition-all duration-300 ${faceDetected ? "border-amber-400 scale-100" : "border-rose-400 scale-90"}`}
                   />
                 </div>
               </div>
 
-              {/* <div className="bg-emerald-50/60 p-3 rounded-2xl border border-emerald-100 text-xs text-emerald-900 space-y-1 font-medium">
-                <div className="flex items-center font-bold text-emerald-800">
-                  <Sparkles className="w-3.5 h-3.5 mr-1.5 text-amber-500" /> Gentle Adaptive AI
+              <div className="space-y-3 pt-1 text-xs">
+                <div className="flex justify-between items-center font-semibold">
+                  <span className="text-slate-500">Eye Gaze:</span>
+                  <span
+                    className={`font-bold ${faceDetected ? "text-emerald-700" : "text-rose-600"}`}
+                  >
+                    {gazeStatus}
+                  </span>
                 </div>
-                <p className="text-[11px] leading-relaxed text-slate-600">
-                  If focus drifts, NeuroLearn switches cards smoothly to keep learning stress-free!
-                </p>
-              </div> */}
+
+                <div>
+                  <div className="flex justify-between font-bold mb-1">
+                    <span className="text-slate-500">Attention Score</span>
+                    <span
+                      className={
+                        engagementScore >= 60
+                          ? "text-emerald-700"
+                          : engagementScore >= 30
+                            ? "text-amber-700"
+                            : "text-rose-700"
+                      }
+                    >
+                      {engagementScore}%
+                    </span>
+                  </div>
+                  <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+                    <div
+                      className={`h-full transition-all duration-300 ${engagementScore >= 60 ? "bg-emerald-500" : engagementScore >= 30 ? "bg-amber-500" : "bg-rose-500"}`}
+                      style={{ width: `${engagementScore}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          )}
         </aside>
       </main>
     </div>
