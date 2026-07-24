@@ -1,24 +1,25 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Mic, MicOff, Volume2, Square, ArrowLeft, Loader2, Trophy } from "lucide-react";
+import {
+  Mic,
+  MicOff,
+  Volume2,
+  Square,
+  ArrowLeft,
+  Loader2,
+  Trophy,
+  Sparkles,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useSpeech } from "../../hooks/useSpeech";
-import { useVoiceCommands, VoiceCommand } from "../../hooks/useVoiceCommands";
+import {
+  useAudioNavigation,
+  usePageVoiceCommands,
+} from "../../contexts/AudioNavigationContext";
+import { VoiceCommand } from "../../hooks/useVoiceCommands";
 import api from "../../lib/api";
-
-/**
- * The blind learner's equivalent of the adaptive quiz.
- *
- * The standard quiz scores engagement from a webcam and switches presentation
- * mode when the learner looks away - neither of which is meaningful here. This
- * one instead reads the question and options aloud, accepts a spoken answer
- * ("option B" / "B" / the option's text), confirms what it heard, and explains
- * the result out loud before moving on.
- *
- * It posts to the SAME /assessments endpoints as the sighted quiz, so
- * finishing it satisfies the one free trial exactly like the normal flow
- * (see ProtectedRoute's trialPath in App.tsx).
- */
 
 interface VoiceQuestion {
   id: string;
@@ -28,8 +29,6 @@ interface VoiceQuestion {
   subject: string;
 }
 
-// Audio-native questions: nothing here depends on seeing an image or a
-// diagram, unlike the sighted bank's VISUAL items.
 const AUDIO_QUESTIONS: VoiceQuestion[] = [
   { id: "b1", question: "What is 5 plus 3?", options: ["6", "7", "8", "9"], answer: "8", subject: "Math" },
   { id: "b2", question: "What sound does a dog make?", options: ["Meow", "Woof", "Moo", "Quack"], answer: "Woof", subject: "Sounds" },
@@ -42,7 +41,6 @@ const AUDIO_QUESTIONS: VoiceQuestion[] = [
 ];
 
 const LETTERS = ["A", "B", "C", "D"];
-/** Pause after spoken feedback before the next question, so it doesn't run over the answer. */
 const NEXT_QUESTION_DELAY_MS = 3500;
 
 export const AudioQuizPage: React.FC = () => {
@@ -56,12 +54,8 @@ export const AudioQuizPage: React.FC = () => {
   const [announcement, setAnnouncement] = useState("");
   const [finished, setFinished] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  // Browsers refuse to start audio OR speechSynthesis until the user has
-  // interacted with the page, so a quiz that began reading on mount was
-  // silently mute on a fresh load. Starting behind an explicit button makes
-  // that first tap the unlock gesture - and "press start" is natural for a
-  // quiz anyway, so it costs the learner nothing.
   const [started, setStarted] = useState(false);
+  const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
 
   const attemptIdRef = useRef<string | null>(null);
   const startedAtRef = useRef(Date.now());
@@ -115,10 +109,6 @@ export const AudioQuizPage: React.FC = () => {
       try {
         if (attemptIdRef.current) {
           await api.post(`/assessments/${attemptIdRef.current}/complete`, {
-            // Zeroed on purpose: there is no webcam in this flow, and inventing
-            // focus samples would corrupt the teacher's avgFocus analytics.
-            // The mode is stated outright instead - see the backend's
-            // preferredMode override.
             modeEngagement: {
               TEXT: { totalScore: 0, samples: 0, focusedSamples: 0 },
               AUDIO: { totalScore: 0, samples: 0, focusedSamples: 0 },
@@ -131,11 +121,9 @@ export const AudioQuizPage: React.FC = () => {
             durationSeconds: Math.round((Date.now() - startedAtRef.current) / 1000),
           });
         }
-        // The trial is now used - refresh so ProtectedRoute stops routing
-        // this learner back here and the dashboard opens.
         await refreshUser();
       } catch {
-        /* score already spoken; a failed sync shouldn't block the learner */
+        /* score already spoken */
       } finally {
         setSubmitting(false);
       }
@@ -149,6 +137,7 @@ export const AudioQuizPage: React.FC = () => {
       const chosen = question.options[choiceIndex];
       if (chosen === undefined) return;
 
+      setSelectedIdx(choiceIndex);
       setAnswered(true);
       const correct = chosen === question.answer;
       const nextScore = correct ? score + 1 : score;
@@ -176,6 +165,7 @@ export const AudioQuizPage: React.FC = () => {
         } else {
           const nextIndex = index + 1;
           setIndex(nextIndex);
+          setSelectedIdx(null);
           setAnswered(false);
           announce(questionScript(AUDIO_QUESTIONS[nextIndex], nextIndex));
         }
@@ -185,31 +175,39 @@ export const AudioQuizPage: React.FC = () => {
   );
 
   const commands: VoiceCommand[] = useMemo(() => {
-    const optionCommands: VoiceCommand[] = LETTERS.map((letter, i) => ({
-      // "option a" first so it outranks a bare "a" appearing inside other words.
-      phrases: [`option ${letter.toLowerCase()}`, `answer ${letter.toLowerCase()}`, `number ${i + 1}`],
-      description: `Answer ${letter}`,
-      run: () => answerWith(i),
-    }));
+    const optionCommands: VoiceCommand[] = LETTERS.map((letter, i) => {
+      const lower = letter.toLowerCase();
+      const numStr = String(i + 1);
+      return {
+        phrases: [
+          `option ${lower}`,
+          `answer ${lower}`,
+          `choice ${lower}`,
+          `select ${lower}`,
+          `option ${numStr}`,
+          `answer ${numStr}`,
+          numStr,
+          lower,
+        ],
+        description: `Answer ${letter}`,
+        run: () => answerWith(i),
+      };
+    });
     return [
       ...optionCommands,
       {
-        phrases: ["repeat", "again", "say again", "read question"],
+        phrases: ["repeat", "again", "say again", "read question", "repeat question"],
         description: "Repeat the question",
         run: () => question && announce(questionScript(question, index)),
       },
-      { phrases: ["stop", "be quiet"], description: "Stop reading", run: () => stopSpeaking() },
-      { phrases: ["go back", "exit", "leave quiz"], description: "Leave the quiz", run: () => { stopSpeaking(); navigate("/dashboard/audio"); } },
+      { phrases: ["stop", "be quiet", "stop reading", "stop audio"], description: "Stop reading", run: () => stopSpeaking() },
+      { phrases: ["go back", "exit", "leave quiz", "exit quiz"], description: "Leave the quiz", run: () => { stopSpeaking(); navigate("/dashboard"); } },
     ];
   }, [answerWith, question, announce, questionScript, index, stopSpeaking, navigate]);
 
-  const { listening, lastHeard, error: voiceError, supported, toggle } = useVoiceCommands(
-    commands,
-    !finished,
-  );
+  usePageVoiceCommands(commands);
+  const { listening, toggleMic: toggle, micSupported: supported, micError: voiceError, lastHeard } = useAudioNavigation();
 
-  // The first tap doubles as the browser's audio-unlock gesture - see the
-  // `started` state above for why this can't happen automatically on mount.
   const beginQuiz = useCallback(() => {
     setStarted(true);
     if (question) {
@@ -222,60 +220,105 @@ export const AudioQuizPage: React.FC = () => {
 
   if (!started) {
     return (
-      <div className="min-h-screen bg-black text-white font-sans flex items-center justify-center p-6">
-        <main className="max-w-xl w-full text-center">
-          <h1 className="text-4xl font-bold text-yellow-300 mb-4">Voice quiz</h1>
-          <p className="text-xl text-gray-200 mb-2">
-            {AUDIO_QUESTIONS.length} questions. Every question and answer is read aloud.
-          </p>
-          <p className="text-lg text-gray-400 mb-8">
-            You can answer by voice or with the buttons. Press the button below to begin.
-          </p>
+      <div className="min-h-screen bg-[#FAF9F5] text-slate-800 font-sans flex flex-col justify-between selection:bg-emerald-100 selection:text-emerald-900">
+        <header className="bg-white px-6 py-4 border-b border-slate-200/80 shadow-xs flex items-center justify-between">
           <button
-            autoFocus
-            onClick={beginQuiz}
-            className="w-full flex items-center justify-center gap-3 p-6 rounded-2xl bg-yellow-400 text-black text-2xl font-bold hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-white"
+            onClick={() => navigate("/dashboard")}
+            className="flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-3.5 py-2 rounded-2xl transition-all"
           >
-            <Volume2 className="w-8 h-8" aria-hidden="true" /> Start quiz
+            <ArrowLeft className="w-4 h-4" />
+            <span>Dashboard</span>
           </button>
-          <button
-            onClick={() => navigate("/dashboard/audio")}
-            className="mt-3 text-lg font-bold text-gray-300 underline hover:text-white focus:outline-none focus:ring-4 focus:ring-yellow-300 rounded px-2 py-1"
-          >
-            Back to dashboard
-          </button>
+          <span className="text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
+            Audio Assessment Mode
+          </span>
+        </header>
+
+        <main className="flex-1 flex items-center justify-center p-6">
+          <div className="max-w-md w-full bg-white p-8 sm:p-10 rounded-3xl border border-slate-200/80 shadow-xl text-center space-y-6">
+            <div className="w-16 h-16 rounded-3xl bg-amber-100 text-amber-700 border border-amber-200 flex items-center justify-center mx-auto shadow-xs">
+              <Volume2 className="w-8 h-8" />
+            </div>
+
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 leading-tight">
+                Voice Adaptive Quiz
+              </h1>
+              <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+                {AUDIO_QUESTIONS.length} questions. Every question and answer is read aloud automatically with full voice control support.
+              </p>
+            </div>
+
+            <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-left text-xs space-y-2 text-slate-600 font-medium">
+              <p className="font-bold text-slate-900 flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-emerald-600" /> How it works:
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-slate-600">
+                <li>Listen to each question read aloud</li>
+                <li>Say &ldquo;option A&rdquo;, &ldquo;B&rdquo;, &ldquo;C&rdquo;, or &ldquo;D&rdquo;</li>
+                <li>Or click any option button directly</li>
+              </ul>
+            </div>
+
+            <button
+              autoFocus
+              onClick={beginQuiz}
+              className="w-full flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-bold shadow-md hover:shadow-lg transition-all cursor-pointer"
+            >
+              <Volume2 className="w-5 h-5" /> Start Quiz Now
+            </button>
+          </div>
         </main>
       </div>
     );
   }
 
   if (finished) {
+    const percent = Math.round((score / AUDIO_QUESTIONS.length) * 100);
     return (
-      <div className="min-h-screen bg-black text-white font-sans p-6">
+      <div className="min-h-screen bg-[#FAF9F5] text-slate-800 font-sans flex flex-col justify-between">
         <div aria-live="assertive" aria-atomic="true" className="sr-only">
           {announcement}
         </div>
-        <main className="max-w-2xl mx-auto text-center pt-16">
-          <Trophy className="w-16 h-16 text-yellow-300 mx-auto mb-6" aria-hidden="true" />
-          <h1 className="text-4xl font-bold text-yellow-300 mb-3">Quiz complete</h1>
-          <p className="text-2xl text-white mb-8">
-            You scored {score} out of {AUDIO_QUESTIONS.length}.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <button
-              onClick={() => speak(`You scored ${score} out of ${AUDIO_QUESTIONS.length}.`)}
-              className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white text-black text-xl font-bold hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-yellow-300"
-            >
-              <Volume2 className="w-6 h-6" /> Read my score
-            </button>
-            <button
-              onClick={() => navigate("/dashboard/audio")}
-              disabled={submitting}
-              className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-yellow-400 text-black text-xl font-bold hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-white disabled:opacity-60"
-            >
-              {submitting ? <Loader2 className="w-6 h-6 animate-spin" /> : null}
-              Back to dashboard
-            </button>
+
+        <main className="flex-1 flex items-center justify-center p-6">
+          <div className="max-w-md w-full bg-white p-8 sm:p-10 rounded-3xl border border-slate-200/80 shadow-xl text-center space-y-6">
+            <div className="w-16 h-16 rounded-3xl bg-amber-100 text-amber-600 border border-amber-200 flex items-center justify-center mx-auto shadow-xs">
+              <Trophy className="w-8 h-8" />
+            </div>
+
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">
+                Quiz Complete!
+              </h1>
+              <p className="text-xs text-slate-500 mt-1">
+                You scored <strong className="text-slate-900">{score}</strong> out of {AUDIO_QUESTIONS.length} ({percent}%).
+              </p>
+            </div>
+
+            <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+              <div
+                className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                style={{ width: `${percent}%` }}
+              />
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              <button
+                onClick={() => speak(`You scored ${score} out of ${AUDIO_QUESTIONS.length}.`)}
+                className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all cursor-pointer"
+              >
+                <Volume2 className="w-4 h-4 text-sky-600" /> Speak Score
+              </button>
+              <button
+                onClick={() => navigate("/dashboard")}
+                disabled={submitting}
+                className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold shadow-md transition-all cursor-pointer disabled:opacity-60"
+              >
+                {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                Back to Dashboard
+              </button>
+            </div>
           </div>
         </main>
       </div>
@@ -283,108 +326,151 @@ export const AudioQuizPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white font-sans">
+    <div className="min-h-screen bg-[#FAF9F5] text-slate-800 font-sans flex flex-col justify-between selection:bg-emerald-100 selection:text-emerald-900">
       <div aria-live="assertive" aria-atomic="true" className="sr-only">
         {announcement}
       </div>
 
-      <header className="border-b-2 border-yellow-400/40 px-5 py-4 flex items-center justify-between gap-4">
+      <header className="bg-white px-6 py-4 flex items-center justify-between sticky top-0 z-30 border-b border-slate-200 shadow-xs">
         <button
-          onClick={() => { stopSpeaking(); navigate("/dashboard/audio"); }}
-          className="flex items-center gap-2 text-lg font-bold text-white hover:text-yellow-300 focus:outline-none focus:ring-4 focus:ring-yellow-300 rounded px-2 py-1"
+          onClick={() => { stopSpeaking(); navigate("/dashboard"); }}
+          className="flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-3.5 py-2 rounded-2xl transition-all"
         >
-          <ArrowLeft className="w-6 h-6" /> Back
+          <ArrowLeft className="w-4 h-4" />
+          <span>Exit</span>
         </button>
-        <p className="text-lg text-gray-200" role="status">
-          Question {index + 1} of {AUDIO_QUESTIONS.length} · Score {score}
-        </p>
+
+        <div className="flex items-center space-x-3">
+          <span className="text-xs font-bold text-slate-600">
+            Question {index + 1} of {AUDIO_QUESTIONS.length}
+          </span>
+          <span className="px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-emerald-800">
+            Score: {score}
+          </span>
+        </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-5 py-6 space-y-6">
-        <div className="flex flex-col sm:flex-row gap-3">
+      <main className="flex-1 max-w-3xl mx-auto w-full p-4 sm:p-8 space-y-6 flex flex-col justify-center">
+        {/* Quick Action Bar */}
+        <div className="flex flex-wrap items-center justify-center gap-3">
           <button
             onClick={() => question && announce(questionScript(question, index))}
-            className="flex-1 flex items-center justify-center gap-3 p-5 rounded-2xl bg-yellow-400 text-black text-xl font-bold hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-white"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-sky-50 hover:bg-sky-100 border border-sky-200 text-sky-800 text-xs font-bold transition-all cursor-pointer"
           >
-            <Volume2 className="w-7 h-7" /> Repeat question
+            <Volume2 className="w-4 h-4 text-sky-600" /> Repeat Question
           </button>
           <button
             onClick={() => { stopSpeaking(); setAnnouncement("Stopped reading."); }}
-            className="flex items-center justify-center gap-3 px-6 py-5 rounded-2xl bg-white text-black text-xl font-bold hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-yellow-300"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-bold transition-all cursor-pointer"
           >
-            <Square className="w-6 h-6" /> Stop
+            <Square className="w-4 h-4 text-slate-500" /> Stop Audio
           </button>
           <button
             onClick={toggle}
             aria-pressed={listening}
             disabled={!supported}
-            className={`flex items-center justify-center gap-3 px-6 py-5 rounded-2xl text-xl font-bold focus:outline-none focus:ring-4 focus:ring-white disabled:opacity-50 ${
-              listening ? "bg-red-500 text-white hover:bg-red-400" : "bg-yellow-400 text-black hover:bg-yellow-300"
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold border transition-all cursor-pointer disabled:opacity-50 ${
+              listening
+                ? "bg-rose-50 border-rose-300 text-rose-800 animate-pulse"
+                : "bg-emerald-50 border-emerald-300 text-emerald-800 hover:bg-emerald-100"
             }`}
           >
-            {listening ? <MicOff className="w-6 h-6" /> : <Mic className="w-6 h-6" />}
-            {listening ? "Stop voice" : "Voice"}
+            {listening ? <MicOff className="w-4 h-4 text-rose-600" /> : <Mic className="w-4 h-4 text-emerald-600" />}
+            {listening ? "Listening (Click to Stop)" : "Voice Control"}
           </button>
         </div>
 
-        {/* Never fail silently on an audio-first screen: if no sound came out,
-            say so in text and offer a retry (which carries a fresh gesture). */}
+        {/* Status Alerts */}
         {blocked && (
-          <div role="alert" className="text-lg text-yellow-100 bg-yellow-950/60 border-2 border-yellow-600 rounded-xl p-4">
-            <p className="font-bold mb-2">The question could not be read aloud.</p>
-            <p className="mb-3">
-              Your browser may be blocking sound, or it may be muted. The full question and every
-              option are written on this page, so you can still answer.
+          <div role="alert" className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-2">
+            <p className="font-bold flex items-center gap-1.5 text-amber-800">
+              <AlertCircle className="w-4 h-4 shrink-0" /> Browser Audio Blocked
             </p>
+            <p>Your browser requires user interaction before playing sound.</p>
             <button
               onClick={() => question && announce(questionScript(question, index))}
-              className="px-5 py-3 rounded-xl bg-yellow-400 text-black text-lg font-bold hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-white"
+              className="px-3.5 py-1.5 rounded-xl bg-amber-500 text-white font-bold hover:bg-amber-600 transition-colors"
             >
-              Try reading it again
+              Play Question Audio
             </button>
           </div>
         )}
 
-        {!supported && (
-          <p className="text-lg text-yellow-200 bg-yellow-950/60 border-2 border-yellow-700 rounded-xl p-4">
-            Voice answering needs Chrome or Edge. You can answer with the buttons below or by
-            pressing Tab then Enter.
-          </p>
-        )}
         {voiceError && (
-          <p role="alert" className="text-lg text-red-200 bg-red-950/60 border-2 border-red-700 rounded-xl p-4">
+          <div role="alert" className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-900 text-xs font-bold">
             {voiceError}
-          </p>
-        )}
-        {listening && (
-          <p className="text-lg text-gray-200">
-            Listening. {lastHeard ? `I heard: "${lastHeard}"` : 'Say "option A".'}
-          </p>
+          </div>
         )}
 
-        <section aria-labelledby="question-heading">
-          <h1 id="question-heading" className="text-3xl font-bold text-yellow-300 mb-5">
-            {question?.question}
-          </h1>
-          <ul className="space-y-3 list-none p-0">
-            {question?.options.map((option, i) => (
-              <li key={option}>
+        {listening && (
+          <div className="p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs text-center font-semibold">
+            {lastHeard ? (
+              <span>Heard: <strong className="text-emerald-950">&ldquo;{lastHeard}&rdquo;</strong></span>
+            ) : (
+              <span>Listening for your answer (e.g. &ldquo;Option A&rdquo;)...</span>
+            )}
+          </div>
+        )}
+
+        {/* Main Question Card */}
+        <section aria-labelledby="question-heading" className="bg-white p-6 sm:p-10 rounded-3xl border border-slate-200/80 shadow-md space-y-6">
+          <div className="text-center space-y-3">
+            <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-emerald-800">
+              Subject: {question?.subject.toUpperCase()}
+            </span>
+            <div className="flex items-center justify-center gap-3">
+              <h1 id="question-heading" className="text-2xl sm:text-3xl font-bold text-slate-900 leading-snug">
+                {question?.question}
+              </h1>
+              <button
+                onClick={() => question && announce(questionScript(question, index))}
+                className="p-2 rounded-full text-slate-500 hover:text-sky-600 hover:bg-sky-50 transition-colors shrink-0"
+                title="Click to re-listen"
+                aria-label="Click to re-listen"
+              >
+                <Volume2 className="w-6 h-6 text-sky-600" />
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {question?.options.map((option, i) => {
+              const isSelected = selectedIdx === i;
+              const isCorrect = option === question.answer;
+              let btnClass =
+                "bg-[#FAF9F5] hover:bg-slate-100 border border-slate-200 text-slate-800 text-base py-4 text-left px-6 rounded-2xl transition-all font-bold relative flex items-center justify-between";
+
+              if (answered && isSelected) {
+                if (isCorrect) {
+                  btnClass =
+                    "bg-emerald-50 border-2 border-emerald-500 text-emerald-900 text-base py-4 text-left px-6 rounded-2xl font-bold relative flex items-center justify-between";
+                } else {
+                  btnClass =
+                    "bg-rose-50 border-2 border-rose-400 text-rose-900 text-base py-4 text-left px-6 rounded-2xl font-bold relative flex items-center justify-between";
+                }
+              }
+
+              return (
                 <button
+                  key={option}
                   onClick={() => answerWith(i)}
                   disabled={answered}
-                  className="w-full text-left p-5 rounded-2xl bg-gray-900 border-4 border-gray-700 text-2xl font-bold text-white hover:border-yellow-300 focus:outline-none focus:border-yellow-300 disabled:opacity-60"
+                  className={btnClass}
                 >
-                  <span className="text-yellow-300 mr-3">Option {LETTERS[i]}</span>
-                  {option}
+                  <div className="flex items-center gap-3">
+                    <span className="w-8 h-8 rounded-xl bg-white text-center leading-8 text-xs font-bold border border-slate-200 text-slate-700 shrink-0">
+                      {LETTERS[i]}
+                    </span>
+                    <span>{option}</span>
+                  </div>
+                  {answered && isSelected && isCorrect && (
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+                  )}
                 </button>
-              </li>
-            ))}
-          </ul>
+              );
+            })}
+          </div>
         </section>
-
-        <p className="text-lg text-gray-400">
-          Say &ldquo;option A&rdquo;, &ldquo;repeat&rdquo;, &ldquo;stop&rdquo;, or &ldquo;go back&rdquo;.
-        </p>
       </main>
     </div>
   );

@@ -33,6 +33,7 @@ import {
 } from "../hooks/useConcentrationTracking";
 import { useAccessibility } from "../contexts/AccessibilityContext";
 import { useAuth } from "../contexts/AuthContext";
+import { usePageVoiceCommands } from "../contexts/AudioNavigationContext";
 import { useSpeech } from "../hooks/useSpeech";
 import { useVoiceCommands, VoiceCommand } from "../hooks/useVoiceCommands";
 import { pickKeyWord, extractSignWords } from "../data/aslAlphabet";
@@ -623,6 +624,8 @@ export const CurriculumPlayerPage: React.FC = () => {
     ];
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curriculum, lessonIndex, view]);
+
+  usePageVoiceCommands(voiceCommands);
 
   // enabled=false auto-stops recognition the moment the learner leaves the
   // lesson view (final assessment, completion screen) - the toggle button

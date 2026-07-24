@@ -15,6 +15,8 @@ import {
 import api from "../lib/api";
 import { useAuth } from "../contexts/AuthContext";
 import { homePathFor } from "../lib/homePath";
+import { usePageVoiceCommands } from "../contexts/AudioNavigationContext";
+import { VoiceCommand } from "../hooks/useVoiceCommands";
 
 type LearningMode = "TEXT" | "AUDIO" | "VISUAL";
 
@@ -1196,6 +1198,62 @@ export const QuizPage: React.FC = () => {
       }
     }, ANSWER_FEEDBACK_MS);
   };
+
+  const voiceCommands: VoiceCommand[] = React.useMemo(() => {
+    const letters = ["a", "b", "c", "d"];
+    const optionCmds: VoiceCommand[] = letters.map((letter, i) => {
+      const numStr = String(i + 1);
+      return {
+        phrases: [
+          `option ${letter}`,
+          `answer ${letter}`,
+          `choice ${letter}`,
+          `select ${letter}`,
+          `option ${numStr}`,
+          `answer ${numStr}`,
+          numStr,
+          letter,
+        ],
+        description: `Select Option ${letter.toUpperCase()}`,
+        run: () => {
+          const q = questions[currentIndex];
+          if (q && q.options[i] && selectedAnswer === null) {
+            handleAnswer(q.options[i]);
+          }
+        },
+      };
+    });
+
+    return [
+      ...optionCmds,
+      {
+        phrases: ["repeat", "read question", "repeat question", "read aloud"],
+        description: "Repeat question audio",
+        run: () => {
+          const q = questions[currentIndex];
+          if (q) speakText(q.question);
+        },
+      },
+      {
+        phrases: ["finish", "finish quiz", "submit quiz"],
+        description: "Finish quiz",
+        run: () => {
+          completeAssessment(score, visitedQuestionIdsRef.current.size).then((attempt) => {
+            navigate("/quiz/result", {
+              state: { score, total: visitedQuestionIdsRef.current.size, attempt },
+            });
+          });
+        },
+      },
+      {
+        phrases: ["exit", "exit quiz", "leave quiz", "go back"],
+        description: "Exit quiz",
+        run: () => navigate(homePathFor(user)),
+      },
+    ];
+  }, [currentIndex, questions, selectedAnswer, handleAnswer, speakText, score, completeAssessment, navigate, user]);
+
+  usePageVoiceCommands(voiceCommands);
 
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60);

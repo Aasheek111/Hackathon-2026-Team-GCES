@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import TutorialAssistant from "../components/TutorialAssistant";
 import api, { resolveMediaUrl } from "../lib/api";
+import { usePageVoiceCommands } from "../contexts/AudioNavigationContext";
+import { VoiceCommand } from "../hooks/useVoiceCommands";
 
 const RAG_SERVICE_URL =
   import.meta.env.VITE_RAG_SERVICE_URL || "http://localhost:8100";
@@ -217,6 +219,81 @@ export const TutorialPage: React.FC = () => {
   const quizScore = tutorial.quiz.filter(
     (q, i) => quizAnswers[i] === q.correct,
   ).length;
+
+  const voiceCommands: VoiceCommand[] = React.useMemo(() => {
+    const letters = ["a", "b", "c", "d"];
+    const optionCmds: VoiceCommand[] = letters.map((letter, optIdx) => {
+      const numStr = String(optIdx + 1);
+      return {
+        phrases: [
+          `option ${letter}`,
+          `answer ${letter}`,
+          `choice ${letter}`,
+          `select ${letter}`,
+          `option ${numStr}`,
+          `answer ${numStr}`,
+          numStr,
+          letter,
+        ],
+        description: `Select Option ${letter.toUpperCase()}`,
+        run: () => {
+          if (!tutorial || quizSubmitted) return;
+          // Apply selection to all active quiz questions or the first unanswered
+          const newAns = { ...quizAnswers };
+          tutorial.quiz.forEach((q, qi) => {
+            if (q.options[optIdx]) {
+              newAns[qi] = q.options[optIdx];
+            }
+          });
+          setQuizAnswers(newAns);
+        },
+      };
+    });
+
+    return [
+      ...optionCmds,
+      {
+        phrases: ["next step", "next", "continue"],
+        description: "Next Step",
+        run: () => {
+          if (tutorial && stepIndex < tutorial.steps.length - 1) {
+            setStepIndex((i) => i + 1);
+          }
+        },
+      },
+      {
+        phrases: ["previous step", "previous", "go back"],
+        description: "Previous Step",
+        run: () => {
+          if (stepIndex > 0) setStepIndex((i) => i - 1);
+        },
+      },
+      {
+        phrases: ["submit", "submit answers", "check answers"],
+        description: "Submit Quiz",
+        run: () => {
+          if (!quizSubmitted) submitQuiz();
+        },
+      },
+      {
+        phrases: ["text mode", "switch to text"],
+        description: "Text Mode",
+        run: () => load("TEXT"),
+      },
+      {
+        phrases: ["audio mode", "switch to audio"],
+        description: "Audio Mode",
+        run: () => load("AUDIO"),
+      },
+      {
+        phrases: ["visual mode", "switch to visual"],
+        description: "Visual Mode",
+        run: () => load("VISUAL"),
+      },
+    ];
+  }, [tutorial, stepIndex, quizAnswers, quizSubmitted, submitQuiz, load]);
+
+  usePageVoiceCommands(voiceCommands);
 
   return (
     <div className="min-h-screen bg-[#FAF9F5] text-slate-800 font-sans selection:bg-emerald-100 selection:text-emerald-900 pb-20">
