@@ -65,7 +65,7 @@ export const VisualDashboardPage: React.FC = () => {
   );
 
   const showSignLanguage = user?.disabilityType === 'DEAFNESS' || user?.disabilityType === null;
-  const navItems: NavItem[] = getStudentNavItems(showSignLanguage, "/dashboard/visual");
+  const navItems: NavItem[] = getStudentNavItems(user?.disabilityType, "/dashboard/visual");
 
   const stats = [
     { label: "XP", value: progress?.xp ?? 0, icon: Zap, tone: "text-amber-600 bg-amber-50 border-amber-200" },

@@ -103,8 +103,7 @@ export const SignLanguagePage: React.FC = () => {
   const [systemId, setSystemId] = useState<SignSystemId>("ASL");
   const system = SIGN_SYSTEMS.find((s) => s.id === systemId)!;
 
-  const isDeafUser = user?.disabilityType === "DEAFNESS" || user?.disabilityType === null;
-  const navItems: NavItem[] = getStudentNavItems(isDeafUser, "/dashboard/visual/sign-language");
+  const navItems: NavItem[] = getStudentNavItems(user?.disabilityType, "/dashboard/visual/sign-language");
 
   // Search wins over the category tabs when there's a query - a learner
   // typing a word wants it found wherever it lives, not filtered to the tab

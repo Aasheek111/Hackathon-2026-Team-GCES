@@ -129,9 +129,8 @@ export const ProgressPage: React.FC = () => {
   });
 
   const { user } = useAuth();
-  const isDeafUser = user?.disabilityType === "DEAFNESS";
 
-  const navItems: NavItem[] = getStudentNavItems(isDeafUser, "/progress");
+  const navItems: NavItem[] = getStudentNavItems(user?.disabilityType, "/progress");
 
   if (loading) {
     return (

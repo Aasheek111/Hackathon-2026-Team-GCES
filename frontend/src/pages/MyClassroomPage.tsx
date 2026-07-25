@@ -73,9 +73,8 @@ export const MyClassroomPage: React.FC = () => {
   });
 
   const { user } = useAuth();
-  const isDeafUser = user?.disabilityType === "DEAFNESS";
 
-  const navItems: NavItem[] = getStudentNavItems(isDeafUser, "/classroom");
+  const navItems: NavItem[] = getStudentNavItems(user?.disabilityType, "/classroom");
 
   if (loading) {
     return (

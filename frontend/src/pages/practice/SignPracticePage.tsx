@@ -106,8 +106,7 @@ export const SignPracticePage: React.FC = () => {
         }`,
   );
 
-  const isDeafUserNav = user?.disabilityType === "DEAFNESS" || user?.disabilityType === null;
-  const navItems: NavItem[] = getStudentNavItems(isDeafUserNav, "/practice/signs");
+  const navItems: NavItem[] = getStudentNavItems(user?.disabilityType, "/practice/signs");
 
   const startQuiz = useCallback(
     (nextDeck: Deck = deck, nextDirection: Direction = direction) => {

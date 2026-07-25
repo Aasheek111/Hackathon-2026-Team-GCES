@@ -883,9 +883,14 @@ export const CurriculumPlayerPage: React.FC = () => {
 
         {/* Presentation modes - the same lessons shown six ways. Switching is
             instant (no regeneration) and keeps your place.
-            Sign mode is strictly reserved for DEAF learners. */}
+            Sign mode is reserved for DEAF learners.
+            AR and VISUAL modes are hidden for BLIND learners. */}
         <div className="flex flex-wrap gap-2 mb-3">
-          {MODES.filter((m) => m.key !== "SIGN" || (user?.disabilityType === "DEAFNESS" || user?.disabilityType === null)).map((m) => {
+          {MODES.filter((m) => {
+            if (m.key === "SIGN" && !(user?.disabilityType === "DEAFNESS" || user?.disabilityType === null)) return false;
+            if ((m.key === "AR" || m.key === "VISUAL") && isBlind) return false;
+            return true;
+          }).map((m) => {
             const Icon = m.icon;
             const active = mode === m.key;
             return (

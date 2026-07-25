@@ -79,8 +79,7 @@ export const SignQuizPage: React.FC = () => {
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
 
-  const isDeafUser = user?.disabilityType === "DEAFNESS" || user?.disabilityType === null;
-  const navItems: NavItem[] = getStudentNavItems(isDeafUser, "/dashboard/visual/sign-quiz");
+  const navItems: NavItem[] = getStudentNavItems(user?.disabilityType, "/dashboard/visual/sign-quiz");
 
   const question = questions[index];
   const correct = selected !== null && selected === question?.sign.id;

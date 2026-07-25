@@ -98,8 +98,7 @@ export const AccessibilitySettingsPage: React.FC = () => {
       `Reduced motion is ${prefs.reducedMotion ? "on" : "off"}.`,
   );
 
-  const isDeafUser = user?.disabilityType === "DEAFNESS" || user?.disabilityType === null;
-  const navItems: NavItem[] = getStudentNavItems(isDeafUser, "/settings");
+  const navItems: NavItem[] = getStudentNavItems(user?.disabilityType, "/settings");
 
   return (
     <DashboardShell navItems={navItems}>
