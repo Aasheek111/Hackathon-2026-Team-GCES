@@ -37,11 +37,11 @@ const CV_SERVICE_URL =
   import.meta.env.VITE_CV_SERVICE_URL || "http://localhost:8000";
 const TRACKING_INTERVAL_MS = 250;
 const LOW_EYE_CONTACT_THRESHOLD = 40;
-const LOW_EYE_CONTACT_SAMPLES = 8;
+const LOW_EYE_CONTACT_SAMPLES = 6;
 // How long the "Adapting Learning Mode…" screen stays up before the next
 // question replaces it. Long enough to actually read what changed and why -
 // at under a second it read as a flicker and the question just jumped.
-const MODE_TRANSITION_MS = 3500;
+const MODE_TRANSITION_MS = 0;
 // How long the correct/incorrect feedback stays on screen after answering
 // before advancing. Learners need time to register the result, especially
 // when the answer was wrong.
@@ -965,57 +965,51 @@ export const QuizPage: React.FC = () => {
     return anyFresh !== -1 ? anyFresh : null;
   }, [questions]);
 
-  const handleEyeContactLossAdaptation = useCallback(() => {
-    if (adaptationLockedRef.current || selectedAnswer !== null || isBlind)
-      return;
-    adaptationLockedRef.current = true;
-    distractionCountRef.current = 0;
-    const nextMode = getNextModeInCycle(currentModeRef.current);
-    const nextIndex = findNextQuestionIndex();
-    if (nextIndex === null) {
-      completeAssessment(score, visitedQuestionIdsRef.current.size).then(
-        (attempt) => {
-          navigate("/quiz/result", {
-            state: {
-              score,
-              total: visitedQuestionIdsRef.current.size,
-              attempt,
-            },
-          });
-        },
-      );
-      return;
-    }
-    setAdaptationToast(
-      `Attention shift detected! Switching to ${MODE_LABELS[nextMode]} mode.`,
+ const handleEyeContactLossAdaptation = useCallback(() => {
+  if (adaptationLockedRef.current || selectedAnswer !== null || isBlind)
+    return;
+  adaptationLockedRef.current = true;
+  distractionCountRef.current = 0;
+  const nextMode = getNextModeInCycle(currentModeRef.current);
+  const nextIndex = findNextQuestionIndex();
+  if (nextIndex === null) {
+    completeAssessment(score, visitedQuestionIdsRef.current.size).then(
+      (attempt) => {
+        navigate("/quiz/result", {
+          state: { score, total: visitedQuestionIdsRef.current.size, attempt },
+        });
+      },
     );
-    setTimeout(() => setAdaptationToast(null), 4000);
-    setShowTransition(true);
-    synth.cancel();
-    window.setTimeout(() => {
-      adaptationCountRef.current += 1;
-      setCurrentMode(nextMode);
-      setCurrentIndex(nextIndex);
-      currentIndexRef.current = nextIndex;
-      currentModeRef.current = nextMode;
-      setSelectedAnswer(null);
-      setIsCorrect(null);
-      setShowTransition(false);
-      lowEyeContactCounter.current = 0;
-      window.setTimeout(() => {
-        adaptationLockedRef.current = false;
-      }, 1800);
-    }, MODE_TRANSITION_MS);
-  }, [
-    completeAssessment,
-    findNextQuestionIndex,
-    getNextModeInCycle,
-    isBlind,
-    navigate,
-    score,
-    selectedAnswer,
-    synth,
-  ]);
+    return;
+  }
+  setAdaptationToast(
+    `Attention shift detected! Switching to ${MODE_LABELS[nextMode]} mode.`,
+  );
+  setTimeout(() => setAdaptationToast(null), 4000);
+  synth.cancel();
+  // Switch immediately - no transition screen
+  adaptationCountRef.current += 1;
+  setCurrentMode(nextMode);
+  setCurrentIndex(nextIndex);
+  currentIndexRef.current = nextIndex;
+  currentModeRef.current = nextMode;
+  setSelectedAnswer(null);
+  setIsCorrect(null);
+  lowEyeContactCounter.current = 0;
+  // small lock window to avoid re-triggering on the same distraction burst
+  window.setTimeout(() => {
+    adaptationLockedRef.current = false;
+  }, 800);
+}, [
+  completeAssessment,
+  findNextQuestionIndex,
+  getNextModeInCycle,
+  isBlind,
+  navigate,
+  score,
+  selectedAnswer,
+  synth,
+]);
 
   // Component-level teardown: stop the webcam and speech the moment the quiz
   // page unmounts (navigation away, back button, etc.).
