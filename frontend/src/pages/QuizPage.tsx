@@ -1157,17 +1157,8 @@ export const QuizPage: React.FC = () => {
               if (lowEyeContactCounter.current >= LOW_EYE_CONTACT_SAMPLES) {
                 lowEyeContactCounter.current = 0;
                 if (!adaptationLockedRef.current && selectedAnswer === null && !isBlind) {
-                  distractionCountRef.current += 1;
-                  if (distractionCountRef.current === 1) {
-                    const nextModeName = MODE_LABELS[getNextModeInCycle(currentModeRef.current)];
-                    setAdaptationToast(
-                      `Distraction 1/2 detected! Stay focused. Next distraction will adapt mode to ${nextModeName}.`
-                    );
-                    setTimeout(() => setAdaptationToast(null), 4000);
-                  } else if (distractionCountRef.current >= 2) {
-                    distractionCountRef.current = 0;
-                    handleEyeContactLossAdaptation();
-                  }
+                  distractionCountRef.current = 0;
+                  handleEyeContactLossAdaptation();
                 }
               }
             } else {
