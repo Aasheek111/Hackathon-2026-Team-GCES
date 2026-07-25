@@ -12,6 +12,7 @@ import {
   Trophy,
   RotateCcw,
 } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
 import { getStudentNavItems } from "../../lib/nav";
 import DashboardShell, { NavItem } from "../../components/DashboardShell";
 import SignSymbol from "../../components/SignSymbol";

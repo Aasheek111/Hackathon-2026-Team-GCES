@@ -27,7 +27,8 @@ import {
   signsInCategory,
   searchSigns,
 } from "../../data/signLanguage";
-import useSignFavourites from "../../hooks/useSignFavourites";
+import { useSignFavourites } from "../../hooks/useSignFavourites";
+import { useAuth } from "../../contexts/AuthContext";
 import { NSL_SOURCES, NSL_UNDOCUMENTED, NSL_DOCUMENTED_COUNT } from "../../data/nepaliSignLanguage";
 
 /**
@@ -102,6 +103,7 @@ export const SignLanguagePage: React.FC = () => {
   const { favourites, toggleFavourite } = useSignFavourites();
   const [systemId, setSystemId] = useState<SignSystemId>("ASL");
   const system = SIGN_SYSTEMS.find((s) => s.id === systemId)!;
+  const { user } = useAuth();
 
   const navItems: NavItem[] = getStudentNavItems(user?.disabilityType, "/dashboard/visual/sign-language");
 

@@ -266,7 +266,7 @@ export const TeacherStudentDetailPage: React.FC = () => {
     setSelectedMonthLabel(rangeStart.toLocaleDateString(undefined, { month: 'long', year: 'numeric' }));
   }, []);
 
-  const navItems: NavItem[] = getTeacherNavItems(`/teacher/students/${id}`);
+  const navItems: NavItem[] = getTeacherNavItems(`/teacher/students/${studentId}`);
 
   if (loading) {
     return (
