@@ -2,17 +2,25 @@ import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Camera, Shield, Eye, Lock, ArrowRight } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 const CONSENT_STORAGE_KEY = 'neurolearn_camera_consent';
 
 export const CameraConsentPage: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
+    // Blind users have no use for camera - skip straight to quiz
+    if (user?.disabilityType === 'BLINDNESS') {
+      localStorage.setItem(CONSENT_STORAGE_KEY, 'declined');
+      navigate('/quiz', { replace: true });
+      return;
+    }
     if (localStorage.getItem(CONSENT_STORAGE_KEY)) {
       navigate('/quiz', { replace: true });
     }
-  }, [navigate]);
+  }, [navigate, user]);
 
   const handleAccept = async () => {
     try {

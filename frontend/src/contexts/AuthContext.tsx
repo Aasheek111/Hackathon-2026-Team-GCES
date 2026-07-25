@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import api from '../lib/api';
 
 /** Mirrors the Prisma DisabilityType enum. Drives which dashboard a student lands on (see lib/homePath.ts). */
@@ -87,10 +87,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(null);
   };
 
-  const refreshUser = async () => {
+  const refreshUser = useCallback(async () => {
     const { data } = await api.get('/auth/me');
     setUser(data.user || data);
-  };
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, token, isLoading, login, register, logout, refreshUser }}>

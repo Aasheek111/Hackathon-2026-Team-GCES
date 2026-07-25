@@ -697,8 +697,11 @@ const demo20Questions = [
   },
 ];
 
-const getRandom20Questions = () => {
-  const shuffled = [...demo20Questions].sort(() => 0.5 - Math.random());
+const getRandom20Questions = (excludeVisual = false) => {
+  const pool = excludeVisual
+    ? demo20Questions.filter((q) => q.learningMode !== "VISUAL")
+    : demo20Questions;
+  const shuffled = [...pool].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, 20);
 };
 
@@ -706,7 +709,7 @@ export const QuizPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const isBlind = user?.disabilityType === "BLINDNESS";
-  const [questions, setQuestions] = useState(() => getRandom20Questions());
+  const [questions, setQuestions] = useState(() => getRandom20Questions(isBlind));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentMode, setCurrentMode] = useState<LearningMode>(
     isBlind ? "AUDIO" : "TEXT",
@@ -765,7 +768,11 @@ export const QuizPage: React.FC = () => {
             0,
             Math.max(20, adminFormatted.length),
           );
-          setQuestions(merged);
+          // For blind users, remove visual-only questions (e.g. "how many fingers")
+          const filtered = isBlind
+            ? merged.filter((q: any) => q.learningMode !== "VISUAL")
+            : merged;
+          setQuestions(filtered.length > 0 ? filtered : merged);
           // Set initial mode from the first question's learningMode
           if (merged[0]?.learningMode && !isBlind) {
             const firstMode = merged[0].learningMode as LearningMode;
